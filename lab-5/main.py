@@ -70,7 +70,7 @@ for i in range(steps):
     d2 = b**3 + 9.3 * b**2 + 7.4 * b - 16.3
 
     # Вывод значений
-    print(f"│{b:<11.4f}│{d1:<18.7f}│{d2:<18.7f}│")
+    print(f"│{b:<11.4g}│{d1:<18.7g}│{d2:<18.7g}│")
 
     # Определение минимального и максимального значений функции d2
     if d2 < min_d2:
@@ -105,7 +105,7 @@ current_value = min_d2
 # Расчет и печать засечек на оси X
 for _ in range(ticks):
     position = int((current_value - min_d2) / scale)  # Позиция засечки на графике
-    formatted_val = f"{current_value:.2f}"
+    formatted_val = f"{current_value:.2g}"
     scale_line = (scale_line[:position + 10 - len(formatted_val) // 2] +
                   formatted_val +
                   scale_line[position + 10 + len(formatted_val) // 2:])
@@ -131,15 +131,15 @@ for i in range(steps):
     if y_axis_position is not None:
         # Вставка оси Y, если она присутствует в видимой области графика
         if star_position < y_axis_position:
-            graph_line = (f"{b:<10.4f}│ " + " " * star_position + "*" +
+            graph_line = (f"{b:<10.4g}│ " + " " * star_position + "*" +
                           " " * (y_axis_position - star_position - 1) + "│")
         elif star_position > y_axis_position:
-            graph_line = (f"{b:<10.4f}│ " + " " * y_axis_position + "│" +
+            graph_line = (f"{b:<10.4g}│ " + " " * y_axis_position + "│" +
                           " " * (star_position - y_axis_position - 1) + "*")
         elif star_position == y_axis_position:
-            graph_line = f"{b:<10.4f}│ " + " " * star_position + "*"
+            graph_line = f"{b:<10.4g}│ " + " " * star_position + "*"
     else:
-        graph_line = f"{b:<10.4f}│ " + " " * star_position + "*"
+        graph_line = f"{b:<10.4g}│ " + " " * star_position + "*"
 
     print(graph_line)
 
