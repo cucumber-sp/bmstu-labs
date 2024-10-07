@@ -90,7 +90,7 @@ print("└" + "─" * 11 + "┴" + "─" * 18 + "┴" + "─" * 18 + "┘")
 print(f"\nКоличество смен знака функции d2: {sign_change_count_d2}")
 
 # Определение масштаба и параметров графика
-graph_width = 80  # Ширина графика в символах
+graph_width = 120  # Ширина графика в символах
 interval_width = max_d2 - min_d2
 scale = interval_width / graph_width  # Масштаб для графика
 
