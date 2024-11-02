@@ -136,7 +136,7 @@ for i in range(steps):
         elif star_position > y_axis_position:
             graph_line = (f"{b:<10.4g}│ " + " " * y_axis_position + "│" +
                           " " * (star_position - y_axis_position - 1) + "*")
-        elif star_position == y_axis_position:
+        else:
             graph_line = f"{b:<10.4g}│ " + " " * star_position + "*"
     else:
         graph_line = f"{b:<10.4g}│ " + " " * star_position + "*"
