@@ -38,8 +38,9 @@ while True:
 # Ввод количества засечек с защитой от некорректного ввода
 while True:
     try:
-        ticks = int(input("Введите количество засечек по горизонтальной оси "
-                          "(от 4 до 8): "))
+        ticks = int(
+            input("Введите количество засечек по горизонтальной оси " "(от 4 до 8): ")
+        )
         if 4 <= ticks <= 8:
             break
         else:
@@ -60,11 +61,11 @@ previous_sign_d2 = None
 sign_change_count_d2 = 0
 
 # Расчет и вывод значений функций
-min_d2, max_d2 = float('inf'), float('-inf')
+min_d2, max_d2 = float("inf"), float("-inf")
 for i in range(steps):
     b = b0 + i * h
     if (b + 1) <= 0:
-        d1 = float('nan')
+        d1 = float("nan")
     else:
         d1 = math.sqrt(b + 1) - (1 / (b + 1)) - 0.5
     d2 = b**3 + 9.3 * b**2 + 7.4 * b - 16.3
@@ -106,9 +107,11 @@ current_value = min_d2
 for _ in range(ticks):
     position = int((current_value - min_d2) / scale)  # Позиция засечки на графике
     formatted_val = f"{current_value:.2g}"
-    scale_line = (scale_line[:position + 10 - len(formatted_val) // 2] +
-                  formatted_val +
-                  scale_line[position + 10 + len(formatted_val) // 2:])
+    scale_line = (
+        scale_line[: position + 10 - len(formatted_val) // 2]
+        + formatted_val
+        + scale_line[position + 10 + len(formatted_val) // 2 :]
+    )
     current_value += interval
 
 # Заголовок графика
@@ -131,11 +134,21 @@ for i in range(steps):
     if y_axis_position is not None:
         # Вставка оси Y, если она присутствует в видимой области графика
         if star_position < y_axis_position:
-            graph_line = (f"{b:<10.4g}│ " + " " * star_position + "*" +
-                          " " * (y_axis_position - star_position - 1) + "│")
+            graph_line = (
+                f"{b:<10.4g}│ "
+                + " " * star_position
+                + "*"
+                + " " * (y_axis_position - star_position - 1)
+                + "│"
+            )
         elif star_position > y_axis_position:
-            graph_line = (f"{b:<10.4g}│ " + " " * y_axis_position + "│" +
-                          " " * (star_position - y_axis_position - 1) + "*")
+            graph_line = (
+                f"{b:<10.4g}│ "
+                + " " * y_axis_position
+                + "│"
+                + " " * (star_position - y_axis_position - 1)
+                + "*"
+            )
         else:
             graph_line = f"{b:<10.4g}│ " + " " * star_position + "*"
     else:

@@ -12,6 +12,6 @@ for i in range(len(list_)):
         letter = string_list[j]
         if letter.isupper() and letter in "QWRTPSDFGHJKLZXCVBNM":
             string_list[j] = letter.lower()
-    list_[i] = ''.join(string_list)
+    list_[i] = "".join(string_list)
 
 print(list_)

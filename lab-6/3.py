@@ -2,12 +2,14 @@
 Автор: Онищенко Андрей, группа ИУ7-12Б
 Лабораторная работа №6 Подпрограмма 3
 """
+
 import math
 
 
-
 while True:
-    list_ = list(map(int, input("Введите список целых чисел (минимум 3 элемента): ").split()))
+    list_ = list(
+        map(int, input("Введите список целых чисел (минимум 3 элемента): ").split())
+    )
     if len(list_) < 3:
         print("Лист должен быть не менее 3 элементов")
     else:
@@ -26,7 +28,9 @@ for i in range(2, len(list_)):
     if curr_sign != last_sign:
         curr_extremum_k += 1
         if curr_extremum_k == required_extremum_k:
-            print(f"Экстремум {required_extremum_k} имеет значение {list_[i - 1]}, индекс {i - 1}.")
+            print(
+                f"Экстремум {required_extremum_k} имеет значение {list_[i - 1]}, индекс {i - 1}."
+            )
             break
         last_sign = curr_sign
 else:

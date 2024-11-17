@@ -13,6 +13,6 @@ for i in range(len(list_)):
     else:
         shift += 1
 
-list_ = list_[:len(list_) - shift]
+list_ = list_[: len(list_) - shift]
 
 print(list_)
