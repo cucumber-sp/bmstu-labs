@@ -17,7 +17,7 @@ def get_task_number(filename):
         return name
     elif name == "main":
         return "1"
-    elif name == "defense":
+    elif name == "defense" or name == "def":
         return "защита"
     return name
 
