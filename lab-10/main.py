@@ -14,12 +14,12 @@ class FunctionBase(ABC):
     def get_y(self, x: float) -> float:
         """Возвращает значение функции в точке x"""
         pass
-    
+
     @abstractmethod
     def get_antiderivative(self, x: float) -> float:
         """Возвращает значение первообразной функции в точке x"""
         pass
-    
+
     @abstractmethod
     def exists_at(self, x: float) -> bool:
         """Проверяет существование функции в точке x"""
@@ -28,7 +28,7 @@ class FunctionBase(ABC):
 
 class CubicFunction(FunctionBase):
     """Кубическая функция вида ax³ + bx² + cx + d"""
-    
+
     def __init__(self, a: float, b: float, c: float, d: float):
         """
         Конструктор кубической функции
@@ -41,15 +41,17 @@ class CubicFunction(FunctionBase):
         self.b = b
         self.c = c
         self.d = d
-    
+
     def get_y(self, x: float) -> float:
         """Вычисляет значение функции ax³ + bx² + cx + d в точке x"""
         return self.a * x**3 + self.b * x**2 + self.c * x + self.d
-    
+
     def get_antiderivative(self, x: float) -> float:
         """Вычисляет значение первообразной (ax⁴/4 + bx³/3 + cx²/2 + dx) в точке x"""
-        return (self.a * x**4) / 4 + (self.b * x**3) / 3 + (self.c * x**2) / 2 + self.d * x
-    
+        return (
+            (self.a * x**4) / 4 + (self.b * x**3) / 3 + (self.c * x**2) / 2 + self.d * x
+        )
+
     def exists_at(self, x: float) -> bool:
         """Кубическая функция существует при любом значении x"""
         return True
@@ -57,9 +59,11 @@ class CubicFunction(FunctionBase):
 
 class IntegrationMethod(ABC):
     """Базовый класс для методов интегрирования"""
-    
+
     @abstractmethod
-    def integrate(self, func: FunctionBase, a: float, b: float, n: int) -> Optional[float]:
+    def integrate(
+        self, func: FunctionBase, a: float, b: float, n: int
+    ) -> Optional[float]:
         """
         Вычисляет определенный интеграл функции
         :param func: интегрируемая функция
@@ -78,66 +82,73 @@ class IntegrationMethod(ABC):
 
 class LeftRectangleMethod(IntegrationMethod):
     """Метод левых прямоугольников"""
-    
+
     def get_name(self) -> str:
         return "Метод левых прямоугольников"
-    
-    def integrate(self, func: FunctionBase, a: float, b: float, n: int) -> Optional[float]:
+
+    def integrate(
+        self, func: FunctionBase, a: float, b: float, n: int
+    ) -> Optional[float]:
         if n <= 0:
             return None
-        
+
         h = (b - a) / n
         result = 0.0
-        
+
         for i in range(n):
             x = a + i * h
             if not func.exists_at(x):
                 return None
             result += func.get_y(x)
-            
+
         return result * h
 
 
 class ParabolicMethod(IntegrationMethod):
     """Метод парабол (Симпсона)"""
-    
+
     def get_name(self) -> str:
         return "Метод парабол"
-    
-    def integrate(self, func: FunctionBase, a: float, b: float, n: int) -> Optional[float]:
+
+    def integrate(
+        self, func: FunctionBase, a: float, b: float, n: int
+    ) -> Optional[float]:
         # Метод парабол требует четного количества участков
         if n <= 0 or n % 2 != 0:
             return None
-            
+
         h = (b - a) / n
         result = func.get_y(a) + func.get_y(b)
-        
+
         # Проверяем существование функции во всех точках
         for i in range(n + 1):
             x = a + i * h
             if not func.exists_at(x):
                 return None
-        
+
         # Чётные узлы (коэффициент 2)
         for i in range(2, n, 2):
             result += 2 * func.get_y(a + i * h)
-            
+
         # Нечётные узлы (коэффициент 4)
         for i in range(1, n, 2):
             result += 4 * func.get_y(a + i * h)
-            
+
         return result * h / 3
 
 
 @dataclass
 class IntegrationResult:
     """Результат интегрирования"""
+
     value: Optional[float]
     absolute_error: Optional[float]
     relative_error: Optional[float]
 
 
-def calculate_errors(computed: Optional[float], actual: float) -> Tuple[Optional[float], Optional[float]]:
+def calculate_errors(
+    computed: Optional[float], actual: float
+) -> Tuple[Optional[float], Optional[float]]:
     """
     Вычисляет абсолютную и относительную погрешности
     :param computed: вычисленное значение
@@ -146,15 +157,20 @@ def calculate_errors(computed: Optional[float], actual: float) -> Tuple[Optional
     """
     if computed is None:
         return None, None
-    
+
     abs_error = abs(computed - actual)
     rel_error = abs_error / abs(actual) if actual != 0 else None
     return abs_error, rel_error
 
 
-def find_required_segments(method: IntegrationMethod, func: FunctionBase, 
-                         a: float, b: float, epsilon: float, 
-                         max_iterations: int = 20) -> Tuple[Optional[float], Optional[int]]:
+def find_required_segments(
+    method: IntegrationMethod,
+    func: FunctionBase,
+    a: float,
+    b: float,
+    epsilon: float,
+    max_iterations: int = 20,
+) -> Tuple[Optional[float], Optional[int]]:
     """
     Находит необходимое количество отрезков для достижения заданной точности
     :param method: метод интегрирования
@@ -166,31 +182,31 @@ def find_required_segments(method: IntegrationMethod, func: FunctionBase,
     :return: (значение интеграла, количество отрезков) или (None, None) если не удалось достичь точности
     """
     n = 2  # Начальное количество отрезков
-    
+
     print(f"\nПоиск необходимого количества отрезков:")
     print(f"{'N':>10} | {'Разница':>15} | {'Требуемая точность':>15}")
     print("-" * 45)
-    
+
     for i in range(max_iterations):
         i_n = method.integrate(func, a, b, n)
         i_2n = method.integrate(func, a, b, 2 * n)
-        
+
         if i_n is None or i_2n is None:
             return None, None
-        
+
         diff = abs(i_n - i_2n)
         print(f"{n:>10} | {diff:>15.2e} | {epsilon:>15.2e}")
-        
+
         if diff < epsilon:
             return i_2n, 2 * n
-        
+
         # Увеличиваем n в 4 раза вместо 2 для более быстрого поиска
         n *= 4
-        
+
         if n > 1e6:  # Ограничение на максимальное количество отрезков
             print("\nПревышено максимальное количество отрезков (1e6)")
             return None, None
-    
+
     return None, None
 
 
@@ -201,6 +217,7 @@ def get_float_input(prompt: str) -> float:
             return float(input(prompt))
         except ValueError:
             print("Ошибка: введите корректное число")
+
 
 def get_int_input(prompt: str, min_value: int = None) -> int:
     """
@@ -218,6 +235,7 @@ def get_int_input(prompt: str, min_value: int = None) -> int:
         except ValueError:
             print("Ошибка: введите корректное целое число")
 
+
 def get_epsilon_input(prompt: str) -> float:
     """
     Получение значения точности от пользователя
@@ -234,6 +252,7 @@ def get_epsilon_input(prompt: str) -> float:
         except ValueError:
             print("Ошибка: введите корректное число")
 
+
 def format_number(value: Optional[float]) -> str:
     """Форматирует число для вывода"""
     if value is None:
@@ -242,20 +261,23 @@ def format_number(value: Optional[float]) -> str:
         return f"{value:.2e}"
     return f"{value:.6f}"
 
+
 def validate_integration_bounds(a: float, b: float) -> bool:
     """Проверяет корректность пределов интегрирования"""
     if abs(b - a) > 1e4:
-        print("\nПредупреждение: большой интервал интегрирования может привести к потере точности!")
+        print(
+            "\nПредупреждение: большой интервал интегрирования может привести к потере точности!"
+        )
         return False
     return True
 
+
 def main():
-    # Создаем тестовую функцию (x³ - 2x² + 3x - 5)
     func = CubicFunction(1, -2, 3, -5)
-    
+
     # Методы интегрирования
     methods = [LeftRectangleMethod(), ParabolicMethod()]
-    
+
     # Ввод параметров интегрирования
     print("\nВвод пределов интегрирования:")
     while True:
@@ -267,17 +289,17 @@ def main():
         if validate_integration_bounds(a, b):
             break
         print("Рекомендуется выбрать меньший интервал интегрирования")
-        if input("Продолжить с текущими значениями? (y/n): ").lower() != 'y':
+        if input("Продолжить с текущими значениями? (y/n): ").lower() != "y":
             continue
         break
-    
+
     print("\nВвод количества участков разбиения:")
     n1 = get_int_input("Введите N1 (количество участков разбиения): ", 0)
     n2 = get_int_input("Введите N2 (количество участков разбиения): ", 0)
-    
+
     # Точное значение интеграла (через первообразную)
     exact_value = func.get_antiderivative(b) - func.get_antiderivative(a)
-    
+
     # Вычисляем интегралы разными методами
     results = []
     for method in methods:
@@ -287,10 +309,10 @@ def main():
             abs_err, rel_err = calculate_errors(value, exact_value)
             method_results.append(IntegrationResult(value, abs_err, rel_err))
         results.append(method_results)
-    
+
     # Формируем таблицы для вывода
     headers = ["Метод", f"N1 = {n1}", f"N2 = {n2}"]
-    
+
     # Таблица значений
     values_table = []
     for method, method_results in zip(methods, results):
@@ -298,7 +320,7 @@ def main():
         for result in method_results:
             row.append(format_number(result.value))
         values_table.append(row)
-    
+
     # Таблица абсолютных погрешностей
     abs_errors_table = []
     for method, method_results in zip(methods, results):
@@ -306,7 +328,7 @@ def main():
         for result in method_results:
             row.append(format_number(result.absolute_error))
         abs_errors_table.append(row)
-    
+
     # Таблица относительных погрешностей
     rel_errors_table = []
     for method, method_results in zip(methods, results):
@@ -317,49 +339,53 @@ def main():
             else:
                 row.append("---")
         rel_errors_table.append(row)
-    
+
     # Выводим таблицы
     print("\nТаблица результатов интегрирования:")
     print(tabulate(values_table, headers=headers, tablefmt="rounded_grid"))
-    
+
     print(f"\nТочное значение интеграла: {format_number(exact_value)}")
-    
+
     print("\nАбсолютные погрешности:")
     print(tabulate(abs_errors_table, headers=headers, tablefmt="rounded_grid"))
-    
+
     print("\nОтносительные погрешности:")
     print(tabulate(rel_errors_table, headers=headers, tablefmt="rounded_grid"))
-    
+
     # Находим наиболее точный метод
-    min_error = float('inf')
+    min_error = float("inf")
     best_method = None
     best_n = None
-    
+
     for method, method_results in zip(methods, results):
         for n, result in zip([n1, n2], method_results):
             if result.absolute_error is not None and result.absolute_error < min_error:
                 min_error = result.absolute_error
                 best_method = method
                 best_n = n
-    
+
     print(f"\nНаиболее точный метод: {best_method.get_name()} при N = {best_n}")
     print(f"Абсолютная погрешность: {format_number(min_error)}")
-    
+
     # Для менее точного метода находим количество отрезков для заданной точности
     print("\nВвод требуемой точности:")
     epsilon = get_epsilon_input("Введите требуемую точность (0 < ε): ")
     worse_method = methods[1] if best_method == methods[0] else methods[0]
-    
+
     print(f"\nПоиск количества отрезков для метода {worse_method.get_name()}")
     print(f"Требуемая точность: {epsilon:.2e}")
-    
-    integral_value, required_n = find_required_segments(worse_method, func, a, b, epsilon)
-    
+
+    integral_value, required_n = find_required_segments(
+        worse_method, func, a, b, epsilon
+    )
+
     if integral_value is not None:
         print(f"\nРезультаты поиска:")
         print(f"Требуемое количество отрезков: {required_n}")
         print(f"Значение интеграла: {format_number(integral_value)}")
-        print(f"Абсолютная погрешность: {format_number(abs(integral_value - exact_value))}")
+        print(
+            f"Абсолютная погрешность: {format_number(abs(integral_value - exact_value))}"
+        )
     else:
         print("\nНе удалось достичь заданной точности")
 
