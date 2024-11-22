@@ -11,8 +11,8 @@ from tabulate import tabulate
 from utility.matrix_input import input_symbol_matrix
 
 # Множества гласных и согласных букв
-VOWELS = set("aeiouAEIOU")
-CONSONANTS = set("bcdfghjklmnpqrstvwxyzBCDFGHJKLMNPQRSTVWXYZ")
+VOWELS = set("AEIOU")
+CONSONANTS = set("bcdfghjklmnpqrstvwxyz")
 
 
 def transform_matrix(matrix):
@@ -27,17 +27,13 @@ def transform_matrix(matrix):
         for j in range(cols):
             char = matrix[i][j]
             # Проверяем, является ли символ латинской буквой
-            if char.isalpha():
-                # Если гласная - делаем строчной
-                if char in VOWELS:
-                    result[i][j] = char.lower()
-                # Если согласная - делаем заглавной
-                elif char in CONSONANTS:
-                    result[i][j] = char.upper()
-                else:
-                    result[i][j] = char  # Не латинская буква
+            if char in VOWELS:
+                result[i][j] = char.lower()
+            # Если согласная - делаем заглавной
+            elif char in CONSONANTS:
+                result[i][j] = char.upper()
             else:
-                result[i][j] = char  # Не буква
+                result[i][j] = char  # Не латинская буква
 
     return result
 

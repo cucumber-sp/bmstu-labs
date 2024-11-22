@@ -66,19 +66,16 @@ def main():
         print("Ввод отменен")
         return
 
-    # Создаем копию матрицы для работы
-    working_matrix = [row[:] for row in matrix]
-
     # Выводим исходную матрицу
-    print_matrix(working_matrix, "Исходная матрица")
+    print_matrix(matrix, "Исходная матрица")
 
     # Поворачиваем по часовой стрелке
-    rotate_clockwise(working_matrix, n)
-    print_matrix(working_matrix, "Матрица после поворота на 90° по часовой стрелке")
+    rotate_clockwise(matrix, n)
+    print_matrix(matrix, "Матрица после поворота на 90° по часовой стрелке")
 
     # Поворачиваем против часовой стрелки
-    rotate_counterclockwise(working_matrix, n)
-    print_matrix(working_matrix, "Матрица после поворота на 90° против часовой стрелки")
+    rotate_counterclockwise(matrix, n)
+    print_matrix(matrix, "Матрица после поворота на 90° против часовой стрелки")
 
 
 if __name__ == "__main__":
