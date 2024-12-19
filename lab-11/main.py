@@ -2,6 +2,7 @@ import random
 import time
 from tabulate import tabulate
 
+
 # Функция сортировки вставками с бинарным поиском
 def binary_insertion_sort(arr):
     def binary_search(sub_arr, target):
@@ -18,9 +19,10 @@ def binary_insertion_sort(arr):
     for i in range(1, len(arr)):
         key = arr[i]
         insert_position = binary_search(arr[:i], key)
-        arr = arr[:insert_position] + [key] + arr[insert_position:i] + arr[i + 1:]
+        arr = arr[:insert_position] + [key] + arr[insert_position:i] + arr[i + 1 :]
         comparisons += i - insert_position
     return arr, comparisons
+
 
 # Функция для измерения времени сортировки с усреднением
 def measure_sort_time_and_swaps(sort_func, arr, runs=5):
@@ -33,6 +35,7 @@ def measure_sort_time_and_swaps(sort_func, arr, runs=5):
         total_time += end_time - start_time
         total_swaps += swaps
     return total_time / runs, total_swaps // runs
+
 
 # Генерация данных для таблицы
 def generate_table(sort_func, sizes, runs=5):
@@ -51,6 +54,7 @@ def generate_table(sort_func, sizes, runs=5):
         results.append([(t1, k1), (t2, k2), (t3, k3)])
     return results
 
+
 # Основная программа
 if __name__ == "__main__":
     # Этап 1: Ввод массива для проверки
@@ -65,24 +69,36 @@ if __name__ == "__main__":
     sizes = [int(input(f"Размер {i+1}: ")) for i in range(3)]
 
     # Генерация данных
-    table_data = generate_table(binary_insertion_sort, sizes, runs=1)  # 10 прогонов для усреднения
+    table_data = generate_table(
+        binary_insertion_sort, sizes, runs=1
+    )  # 10 прогонов для усреднения
 
     # Создание таблицы
     rows = []
-    for i, row_name in enumerate(["Упорядоченный список", "Случайный список", "Обратный порядок"]):
-        rows.append([
-            row_name,
-            f"{table_data[0][i][0]:.6f}", table_data[0][i][1],
-            f"{table_data[1][i][0]:.6f}", table_data[1][i][1],
-            f"{table_data[2][i][0]:.6f}", table_data[2][i][1],
-        ])
+    for i, row_name in enumerate(
+        ["Упорядоченный список", "Случайный список", "Обратный порядок"]
+    ):
+        rows.append(
+            [
+                row_name,
+                f"{table_data[0][i][0]:.6f}",
+                table_data[0][i][1],
+                f"{table_data[1][i][0]:.6f}",
+                table_data[1][i][1],
+                f"{table_data[2][i][0]:.6f}",
+                table_data[2][i][1],
+            ]
+        )
 
     # Заголовки таблицы
     headers = [
         "Тип массива",
-        f"N={sizes[0]} Время", f"N={sizes[0]} Перестановки",
-        f"N={sizes[1]} Время", f"N={sizes[1]} Перестановки",
-        f"N={sizes[2]} Время", f"N={sizes[2]} Перестановки"
+        f"N={sizes[0]} Время",
+        f"N={sizes[0]} Перестановки",
+        f"N={sizes[1]} Время",
+        f"N={sizes[1]} Перестановки",
+        f"N={sizes[2]} Время",
+        f"N={sizes[2]} Перестановки",
     ]
 
     # Вывод таблицы
