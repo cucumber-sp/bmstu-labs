@@ -6,7 +6,8 @@ def get_lab_number(file_path):
     parts = file_path.split("/")
     for part in parts:
         if part.startswith("lab-"):
-            return part[4:]
+            lab_num = part[4:]
+            return lab_num.zfill(2)  # Ensure lab number is two digits
     return None
 
 
@@ -25,7 +26,7 @@ def get_task_number(filename):
 def create_docstring(lab_num, task_num):
     return f'''"""
 Автор: Онищенко Андрей, группа ИУ7-12Б
-Лабораторная работа №{lab_num} {"Подпрограмма " + task_num if lab_num == "8" else "Задание " + task_num}
+Лабораторная работа №{lab_num} {"Подпрограмма " + task_num if lab_num == "08" else "Задание " + task_num}
 """
 '''
 
