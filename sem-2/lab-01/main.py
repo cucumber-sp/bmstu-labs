@@ -1,6 +1,6 @@
 """
 Автор: Онищенко Андрей
-Группа: ИУ7-12Б
+Группа: ИУ7-22Б
 Лабораторная работа №1 "Калькулятор систем счисления"
 Интерфейсная часть программы - калькулятор перевода чисел
 """
@@ -14,7 +14,7 @@ class NumberSystemCalculator:
     def __init__(self, root):
         self.root = root
         self.root.title("Калькулятор систем счисления")
-        self.root.geometry("600x400")
+        self.root.geometry("700x400")
 
         self.create_menu()
         self.create_widgets()
@@ -65,7 +65,7 @@ class NumberSystemCalculator:
         digits_frame = ttk.Frame(self.root, padding="10")
         digits_frame.pack(fill="x", padx=10)
 
-        for i in range(7):
+        for i in range(10):
             btn = ttk.Button(
                 digits_frame, text=str(i), command=lambda x=i: self.add_digit(str(x))
             )
@@ -103,14 +103,24 @@ class NumberSystemCalculator:
 
     def bind_keys(self):
         """Привязывает обработчики клавиш"""
-        self.root.bind("<Key>", self.handle_key)
-        self.root.bind("<BackSpace>", lambda e: self.backspace())
+        self.input_entry.config(validate="key", validatecommand=(self.root.register(self.validate_input), "%S", "%P"))
         self.root.bind("<Return>", lambda e: self.convert_to_base7())
+
+    def validate_input(self, char, new_value):
+        """Проверяет вводимый символ"""
+        if char not in "0123456789.-":
+            return False
+            
+        if char == "-" and len(new_value) > 1:
+            return False
+        if char == "." and "." in new_value[:-1]:
+            return False
+            
+        return True
 
     def handle_key(self, event):
         """Обрабатывает нажатия клавиш"""
-        if event.char in "0123456.-":
-            self.add_digit(event.char)
+        pass
 
     def add_digit(self, digit):
         """Добавляет цифру или символ в поле ввода"""
@@ -177,7 +187,7 @@ class NumberSystemCalculator:
 - из семеричной системы в десятичную
 
 Автор: Онищенко Андрей
-Группа: ИУ7-12Б"""
+Группа: ИУ7-22Б"""
         messagebox.showinfo("О программе", about_text)
 
 
