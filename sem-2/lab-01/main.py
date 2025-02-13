@@ -103,19 +103,22 @@ class NumberSystemCalculator:
 
     def bind_keys(self):
         """Привязывает обработчики клавиш"""
-        self.input_entry.config(validate="key", validatecommand=(self.root.register(self.validate_input), "%S", "%P"))
+        self.input_entry.config(
+            validate="key",
+            validatecommand=(self.root.register(self.validate_input), "%S", "%P"),
+        )
         self.root.bind("<Return>", lambda e: self.convert_to_base7())
 
     def validate_input(self, char, new_value):
         """Проверяет вводимый символ"""
         if char not in "0123456789.-":
             return False
-            
+
         if char == "-" and len(new_value) > 1:
             return False
         if char == "." and "." in new_value[:-1]:
             return False
-            
+
         return True
 
     def handle_key(self, event):
